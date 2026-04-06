@@ -1,0 +1,5 @@
+flask
+flas-cors
+flask-sqlalhemy
+python-dotenv
+google-genai

@@ -1,0 +1,4 @@
+GEMINI_API-KEY=AlzaSyC7e58YJyklx97ZypY_vLPfRnUI5TIKE
+AUTH0_DOMAIN=your-tenant.auth0.com
+AUTH0_CLIENT_ID=your-client-id
+DATABASE_URL=sqlite:///smart_finance.db
