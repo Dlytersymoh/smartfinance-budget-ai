@@ -17,7 +17,7 @@ body {
     secondary-font-family: 'Inter', sans-serif;
 }
 
-/* 2. Custom "Web3" Scrollbar for the Chat Window */
+
 .custom-scrollbar::-webkit-scrollbar {
     width: 5px;
 }
@@ -35,7 +35,7 @@ body {
     background: var(--primary-blue);
 }
 
-/* 3. Glowing Text & Borders */
+
 .glow-text {
     text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
 }

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartFinance AI | Your Money, Powered by AI</title>
+    <meta name="description" content="Track expenses, manage budgets, and get real-time AI financial advice. Built for the next generation of smart money managers." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .gradient-text {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a5f 0%, #1e1b4b 50%, #0f172a 100%);
+        }
+        .card-glow {
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.08);
+        }
+        .hero-glow {
+            background: radial-gradient(ellipse at 50% 0%, rgba(59,130,246,0.15) 0%, transparent 70%);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .float { animation: float 4s ease-in-out infinite; }
+    </style>
+</head>
+<body class="bg-slate-900 text-white font-sans selection:bg-purple-500/30 overflow-x-hidden">
+
+    <!-- Hero Glow -->
+    <div class="hero-glow fixed inset-0 pointer-events-none z-0"></div>
+
+    <!-- Navbar -->
+    <nav class="relative z-10 flex justify-between items-center px-6 md:px-12 py-5 max-w-7xl mx-auto">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-500/30">
+                <i class="fa-solid fa-chart-line text-white text-sm"></i>
+            </div>
+            <h1 class="text-xl font-black tracking-tight">
+                Smart<span class="text-blue-400">Finance</span><span class="text-purple-400">.AI</span>
+            </h1>
+        </div>
+        <div class="hidden md:flex items-center gap-8">
+            <a href="#features" class="text-slate-400 hover:text-white transition text-sm font-medium">Features</a>
+            <a href="#how-it-works" class="text-slate-400 hover:text-white transition text-sm font-medium">How it Works</a>
+            <button onclick="showTab('login')" class="text-slate-400 hover:text-white transition text-sm font-medium">Login</button>
+            <button
+                onclick="showTab('signup')"
+                class="bg-blue-600 hover:bg-blue-500 px-5 py-2.5 rounded-full font-bold text-sm transition shadow-lg shadow-blue-900/30"
+            >
+                Get Started Free →
+            </button>
+        </div>
+        <button onclick="showTab('signup')" class="md:hidden bg-blue-600 px-4 py-2 rounded-full text-sm font-bold">
+            Get Started
+        </button>
+    </nav>
+
+    <!-- ─── HERO ──────────────────────────────────────────────────────────────── -->
+    <main class="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pt-16 pb-24">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+            <!-- Left: Copy -->
+            <div>
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 mb-8 text-xs font-bold tracking-widest text-blue-400 uppercase bg-blue-400/10 rounded-full border border-blue-400/20">
+                    <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+                    Powered by Gemini 1.5 Flash
+                </div>
+
+                <h2 class="text-5xl md:text-6xl font-black mb-6 leading-[1.05] tracking-tight">
+                    Stop Guessing.<br>
+                    Start <span class="gradient-text">Growing.</span>
+                </h2>
+
+                <p class="text-slate-400 text-lg leading-relaxed mb-8 max-w-lg">
+                    SmartFinance AI gives you a personal finance advisor in your pocket — powered by AI, built for real life. Track every shilling, understand every pattern, and make smarter decisions daily.
+                </p>
+
+                <div class="flex flex-wrap gap-4 mb-12">
+                    <button
+                        onclick="showTab('signup')"
+                        class="px-8 py-4 bg-white text-slate-900 rounded-xl font-black text-base hover:bg-blue-50 transition shadow-xl hover:scale-105 transform"
+                    >
+                        Create Free Account
+                    </button>
+                    <a
+                        href="#features"
+                        class="px-8 py-4 bg-slate-800 text-white rounded-xl font-bold text-base border border-slate-700 hover:bg-slate-700 transition"
+                    >
+                        See How It Works
+                    </a>
+                </div>
+
+                <!-- Social proof -->
+                <div class="flex items-center gap-6 text-sm text-slate-500">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved text-green-500"></i>
+                        <span>Bank-level security</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-bolt text-yellow-500"></i>
+                        <span>Real-time insights</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-robot text-blue-500"></i>
+                        <span>AI-powered</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Auth Card -->
+            <div class="float" id="auth-card">
+                <div class="bg-slate-800/80 backdrop-blur-md rounded-3xl border border-slate-700 shadow-2xl card-glow overflow-hidden">
+
+                    <!-- Tabs -->
+                    <div class="flex border-b border-slate-700">
+                        <button
+                            id="tab-login"
+                            onclick="showTab('login')"
+                            class="flex-1 py-4 text-sm font-bold uppercase tracking-widest transition-colors text-blue-400 bg-blue-500/10 border-b-2 border-blue-500"
+                        >
+                            Login
+                        </button>
+                        <button
+                            id="tab-signup"
+                            onclick="showTab('signup')"
+                            class="flex-1 py-4 text-sm font-bold uppercase tracking-widest transition-colors text-slate-400 hover:text-white"
+                        >
+                            Sign Up
+                        </button>
+                    </div>
+
+                    <div class="p-8">
+
+                        <!-- Error message -->
+                        <div id="auth-error" style="display:none" class="flex items-center gap-2 p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm mb-4">
+                            <i class="fa-solid fa-circle-exclamation shrink-0"></i>
+                            <span id="auth-error-text"></span>
+                        </div>
+
+                        <!-- Success message -->
+                        <div id="auth-success" style="display:none" class="flex items-center gap-2 p-3 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400 text-sm mb-4">
+                            <i class="fa-solid fa-circle-check shrink-0"></i>
+                            <span id="auth-success-text"></span>
+                        </div>
+
+                        <!-- LOGIN FORM -->
+                        <form id="login-form" onsubmit="handleLogin(event)" style="display:block" class="space-y-4">
+                            <div>
+                                <label class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2 block">Email</label>
+                                <div class="relative">
+                                    <i class="fa-solid fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+                                    <input
+                                        id="login-email"
+                                        type="email"
+                                        placeholder="you@example.com"
+                                        class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2 block">Password</label>
+                                <div class="relative">
+                                    <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+                                    <input
+                                        id="login-password"
+                                        type="password"
+                                        placeholder="••••••••"
+                                        class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <button
+                                id="login-btn"
+                                type="submit"
+                                class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-black transition shadow-lg shadow-blue-900/30 disabled:opacity-50 disabled:cursor-wait mt-2"
+                            >
+                                Login to Dashboard
+                            </button>
+                            <p class="text-center text-slate-500 text-xs">
+                                Don't have an account?
+                                <button type="button" onclick="showTab('signup')" class="text-blue-400 hover:underline font-bold">Sign up free</button>
+                            </p>
+                        </form>
+
+                        <!-- SIGNUP FORM -->
+                        <form id="signup-form" onsubmit="handleSignup(event)" style="display:none" class="space-y-4">
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2 block">First Name</label>
+                                    <input
+                                        id="signup-firstname"
+                                        type="text"
+                                        placeholder="John"
+                                        class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2 block">Last Name</label>
+                                    <input
+                                        id="signup-lastname"
+                                        type="text"
+                                        placeholder="Doe"
+                                        class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2 block">Email</label>
+                                <div class="relative">
+                                    <i class="fa-solid fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+                                    <input
+                                        id="signup-email"
+                                        type="email"
+                                        placeholder="you@example.com"
+                                        class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2 block">Password</label>
+                                <div class="relative">
+                                    <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+                                    <input
+                                        id="signup-password"
+                                        type="password"
+                                        placeholder="Min 8 characters"
+                                        class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                        required
+                                        minlength="8"
+                                    />
+                                </div>
+                            </div>
+                            <button
+                                id="signup-btn"
+                                type="submit"
+                                class="w-full py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white rounded-xl font-black transition shadow-lg mt-2"
+                            >
+                                Create My Free Account
+                            </button>
+                            <p class="text-center text-slate-500 text-xs">
+                                Already have an account?
+                                <button type="button" onclick="showTab('login')" class="text-blue-400 hover:underline font-bold">Login</button>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ─── FEATURES ──────────────────────────────────────────────────────────── -->
+    <section id="features" class="relative z-10 max-w-7xl mx-auto px-6 md:px-12 py-24 border-t border-slate-800">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-black mb-4">
+                Why <span class="gradient-text">thousands</span> trust us
+            </h2>
+            <p class="text-slate-400 max-w-xl mx-auto">Built for students, entrepreneurs, and everyday people who are serious about their money.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="p-7 rounded-2xl bg-slate-800/50 border border-slate-700 hover:border-blue-500/50 transition group">
+                <div class="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-blue-500/20 transition">
+                    <i class="fa-solid fa-bolt text-blue-500 text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">Real-time Tracking</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Every transaction captured instantly. Know exactly where your money goes — by category, by day, by pattern.</p>
+            </div>
+
+            <div class="p-7 rounded-2xl bg-slate-800/50 border border-slate-700 hover:border-purple-500/50 transition group">
+                <div class="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-purple-500/20 transition">
+                    <i class="fa-solid fa-robot text-purple-500 text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">Your Personal AI Advisor</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Ask anything. Get personalized budget tips, savings strategies, and financial insights — available 24/7 at no extra cost.</p>
+            </div>
+
+            <div class="p-7 rounded-2xl bg-slate-800/50 border border-slate-700 hover:border-green-500/50 transition group">
+                <div class="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-green-500/20 transition">
+                    <i class="fa-solid fa-shield-halved text-green-500 text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">Secure by Design</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Your financial data is encrypted end-to-end. We never sell your data. Your vault, your rules.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── HOW IT WORKS ───────────────────────────────────────────────────────── -->
+    <section id="how-it-works" class="relative z-10 max-w-7xl mx-auto px-6 md:px-12 py-24 border-t border-slate-800">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-black mb-4">Up and running in <span class="gradient-text">60 seconds</span></h2>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8 text-center">
+            <div class="space-y-4">
+                <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto text-2xl font-black shadow-lg shadow-blue-900/30">1</div>
+                <h3 class="text-xl font-bold">Create your account</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Sign up free in under a minute. No credit card required.</p>
+            </div>
+            <div class="space-y-4">
+                <div class="w-16 h-16 bg-purple-600 rounded-2xl flex items-center justify-center mx-auto text-2xl font-black shadow-lg shadow-purple-900/30">2</div>
+                <h3 class="text-xl font-bold">Log your expenses</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Add income and expenses in seconds. Watch your dashboard update live.</p>
+            </div>
+            <div class="space-y-4">
+                <div class="w-16 h-16 bg-green-600 rounded-2xl flex items-center justify-center mx-auto text-2xl font-black shadow-lg shadow-green-900/30">3</div>
+                <h3 class="text-xl font-bold">Talk to your AI advisor</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Ask your Gemini advisor anything and get smart, personalized financial advice instantly.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── CTA ───────────────────────────────────────────────────────────────── -->
+    <section class="relative z-10 max-w-4xl mx-auto px-6 py-24 text-center">
+        <div class="bg-gradient-to-br from-blue-700 via-blue-600 to-purple-700 rounded-[2.5rem] p-12 md:p-20 shadow-2xl shadow-blue-900/40 relative overflow-hidden">
+            <h2 class="text-4xl md:text-5xl font-black mb-6 leading-tight relative z-10">
+                Your finances deserve better than a spreadsheet.
+            </h2>
+            <p class="text-blue-100 text-lg mb-10 relative z-10">Join SmartFinance AI today — it's free, it's fast, and it actually works.</p>
+            <button
+                onclick="showTab('signup')"
+                class="px-10 py-5 bg-white text-blue-700 rounded-2xl font-black text-lg hover:bg-blue-50 transition shadow-xl relative z-10"
+            >
+                Start for Free — No Card Needed
+            </button>
+            <div class="absolute -top-20 -right-20 w-64 h-64 bg-white/5 blur-3xl rounded-full"></div>
+            <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-black/10 blur-3xl rounded-full"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative z-10 text-center py-10 text-slate-500 text-[10px] uppercase tracking-widest border-t border-slate-800">
+        <p>&copy; 2026 SmartFinance AI &mdash; Built with ❤️ by Symoh</p>
+    </footer>
+
+    
+    <script>
+        // ─── Tab Switcher ──────────────────────────────────────────────────────
+        function showTab(tab) {
+            const loginForm  = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+            const tabLogin   = document.getElementById('tab-login');
+            const tabSignup  = document.getElementById('tab-signup');
+
+            clearMessages();
+
+            if (tab === 'login') {
+                loginForm.style.display  = 'block';
+                signupForm.style.display = 'none';
+                tabLogin.className  = 'flex-1 py-4 text-sm font-bold uppercase tracking-widest transition-colors text-blue-400 bg-blue-500/10 border-b-2 border-blue-500';
+                tabSignup.className = 'flex-1 py-4 text-sm font-bold uppercase tracking-widest transition-colors text-slate-400 hover:text-white';
+            } else {
+                loginForm.style.display  = 'none';
+                signupForm.style.display = 'block';
+                tabSignup.className = 'flex-1 py-4 text-sm font-bold uppercase tracking-widest transition-colors text-blue-400 bg-blue-500/10 border-b-2 border-blue-500';
+                tabLogin.className  = 'flex-1 py-4 text-sm font-bold uppercase tracking-widest transition-colors text-slate-400 hover:text-white';
+            }
+
+            // Scroll auth card into view on mobile
+            document.getElementById('auth-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // ─── Handle Login ──────────────────────────────────────────────────────
+        async function handleLogin(e) {
+            e.preventDefault();
+            const email    = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+            const btn      = document.getElementById('login-btn');
+
+            if (!email || !password) {
+                showError('Please enter your email and password.');
+                return;
+            }
+
+            btn.disabled    = true;
+            btn.textContent = 'Logging in...';
+
+            try {
+                const response = await fetch(`${typeof API_BASE !== 'undefined' ? API_BASE : 'http://127.0.0.1:5000'}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.token) {
+                    localStorage.setItem('smart_finance_token', data.token);
+                    showSuccess('Login successful! Redirecting...');
+                    setTimeout(() => { window.location.href = '/dashboard'; }, 800);
+                } else {
+                    showError(data.error || 'Invalid email or password.');
+                }
+            } catch (err) {
+                showError('Cannot reach the server. Make sure Flask is running.');
+            } finally {
+                btn.disabled    = false;
+                btn.textContent = 'Login to Dashboard';
+            }
+        }
+
+        // ─── Handle Signup ─────────────────────────────────────────────────────
+        async function handleSignup(e) {
+            e.preventDefault();
+            const firstName = document.getElementById('signup-firstname').value.trim();
+            const lastName  = document.getElementById('signup-lastname').value.trim();
+            const email     = document.getElementById('signup-email').value.trim();
+            const password  = document.getElementById('signup-password').value;
+            const btn       = document.getElementById('signup-btn');
+
+            if (!firstName || !lastName || !email || !password) {
+                showError('Please fill in all fields.');
+                return;
+            }
+            if (password.length < 8) {
+                showError('Password must be at least 8 characters.');
+                return;
+            }
+
+            btn.disabled    = true;
+            btn.textContent = 'Creating account...';
+
+            try {
+                const response = await fetch(`${typeof API_BASE !== 'undefined' ? API_BASE : 'http://127.0.0.1:5000'}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ firstName, lastName, email, password }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showSuccess('Account created! Please login.');
+                    setTimeout(() => showTab('login'), 1500);
+                } else {
+                    showError(data.error || 'Registration failed. Please try again.');
+                }
+            } catch (err) {
+                showError('Cannot reach the server. Make sure Flask is running.');
+            } finally {
+                btn.disabled    = false;
+                btn.textContent = 'Create My Free Account';
+            }
+        }
+
+        // ─── Message Helpers ───────────────────────────────────────────────────
+        function showError(msg) {
+            const el = document.getElementById('auth-error');
+            const tx = document.getElementById('auth-error-text');
+            if (el && tx) { tx.textContent = msg; el.style.display = 'flex'; }
+            document.getElementById('auth-success').style.display = 'none';
+        }
+
+        function showSuccess(msg) {
+            const el = document.getElementById('auth-success');
+            const tx = document.getElementById('auth-success-text');
+            if (el && tx) { tx.textContent = msg; el.style.display = 'flex'; }
+            document.getElementById('auth-error').style.display = 'none';
+        }
+
+        function clearMessages() {
+            document.getElementById('auth-error').style.display   = 'none';
+            document.getElementById('auth-success').style.display = 'none';
+        }
+
+        // ─── Redirect if already logged in ────────────────────────────────────
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof Auth !== 'undefined' && Auth.getToken()) {
+                window.location.href = '/dashboard';
+            }
+        });
+    </script>
+</body>
+</html>
